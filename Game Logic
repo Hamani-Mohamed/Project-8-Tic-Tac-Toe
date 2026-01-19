@@ -1,0 +1,206 @@
+using System;
+using System.Windows.Forms;
+using tic.Properties;
+
+namespace tic
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void GameOver()
+        {
+            lblPlayer.ForeColor = System.Drawing.Color.Yellow;
+            lblPlayer.Text = "Game Over";
+
+            pb1.Enabled = false;
+            pb2.Enabled = false;
+            pb3.Enabled = false;
+            pb4.Enabled = false;
+            pb5.Enabled = false;
+            pb6.Enabled = false;
+            pb7.Enabled = false;
+            pb8.Enabled = false;
+            pb9.Enabled = false;
+            MessageBox.Show("Game Over!", "Game Ended!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        static byte turn = 1;
+        static byte x = 0;
+        static byte o = 0;
+
+        private bool HorizontalWin()
+        {
+            if (pb1.Tag == pb2.Tag && pb2.Tag == pb3.Tag && pb1.Tag != null
+                || pb4.Tag == pb5.Tag && pb5.Tag == pb6.Tag && pb4.Tag != null
+                || pb7.Tag == pb8.Tag && pb8.Tag == pb9.Tag && pb7.Tag != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool VerticalWin()
+        {
+            if (pb1.Tag == pb4.Tag && pb4.Tag == pb7.Tag && pb1.Tag != null
+                || pb2.Tag == pb5.Tag && pb5.Tag == pb8.Tag && pb2.Tag != null
+                || pb3.Tag == pb6.Tag && pb6.Tag == pb9.Tag && pb3.Tag != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool DiagonalWin()
+        {
+            if (pb1.Tag == pb5.Tag && pb5.Tag == pb9.Tag && pb1.Tag != null
+                || pb3.Tag == pb5.Tag && pb5.Tag == pb7.Tag && pb3.Tag != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool Winner()
+        {
+            return HorizontalWin() || VerticalWin() || DiagonalWin();
+        }
+
+        private void Game(PictureBox pb)
+        {
+            if (turn % 2 != 0)
+            {
+                pb.Tag = "X";
+                pb.Enabled = false;
+                pb.Image = Resources.x;
+                lblPlayer.Text = "Player 2";
+                lblPlayer.ForeColor = System.Drawing.Color.DodgerBlue;
+                x++;
+                if (x >= 3)
+                {
+                    if (Winner())
+                    {
+                        lblWinner.ForeColor = System.Drawing.Color.Red;
+                        lblWinner.Text = "Player 1";
+                        GameOver();
+                    }
+                }
+            }
+
+            else
+            {
+                pb.Tag = "O";
+                pb.Enabled = false;
+                lblPlayer.Text = "Player 1";
+                lblPlayer.ForeColor = System.Drawing.Color.Red;
+                pb.Image = Resources.o;
+                o++;
+                if (o >= 3)
+                {
+                    if (Winner())
+                    {
+                        lblWinner.ForeColor = System.Drawing.Color.DodgerBlue;
+                        lblWinner.Text = "Player 2";
+                        GameOver();
+                    }
+                }
+            }
+
+            turn++;
+
+            if (turn > 9 && !Winner())
+            {
+                lblWinner.ForeColor = System.Drawing.Color.Lime;
+                lblWinner.Text = "Draw";
+                GameOver();
+            }
+        }
+
+        private void pb1_Click(object sender, EventArgs e)
+        {
+            Game(pb1);
+        }
+
+        private void pb2_Click(object sender, EventArgs e)
+        {
+            Game(pb2);
+        }
+
+        private void pb3_Click(object sender, EventArgs e)
+        {
+            Game(pb3);
+        }
+
+        private void pb4_Click(object sender, EventArgs e)
+        {
+            Game(pb4);
+        }
+
+        private void pb5_Click(object sender, EventArgs e)
+        {
+            Game(pb5);
+        }
+
+        private void pb6_Click(object sender, EventArgs e)
+        {
+            Game(pb6);
+        }
+
+        private void pb7_Click(object sender, EventArgs e)
+        {
+            Game(pb7);
+        }
+
+        private void pb8_Click(object sender, EventArgs e)
+        {
+            Game(pb8);
+        }
+
+        private void pb9_Click(object sender, EventArgs e)
+        {
+            Game(pb9);
+        }
+
+        private void btnRestart_Click(object sender, EventArgs e)
+        {
+            turn = 1;
+            pb1.Image = Resources.question_mark;
+            pb2.Image = Resources.question_mark;
+            pb3.Image = Resources.question_mark;
+            pb4.Image = Resources.question_mark;
+            pb5.Image = Resources.question_mark;
+            pb6.Image = Resources.question_mark;
+            pb7.Image = Resources.question_mark;
+            pb8.Image = Resources.question_mark;
+            pb9.Image = Resources.question_mark;
+
+            pb1.Tag = null;
+            pb2.Tag = null;
+            pb3.Tag = null;
+            pb4.Tag = null;
+            pb5.Tag = null;
+            pb6.Tag = null;
+            pb7.Tag = null;
+            pb8.Tag = null;
+            pb9.Tag = null;
+
+            pb1.Enabled = true;
+            pb2.Enabled = true;
+            pb3.Enabled = true;
+            pb4.Enabled = true;
+            pb5.Enabled = true;
+            pb6.Enabled = true;
+            pb7.Enabled = true;
+            pb8.Enabled = true;
+            pb9.Enabled = true;
+
+            lblPlayer.ForeColor = System.Drawing.Color.Red;
+            lblPlayer.Text = "Player 1";
+            lblWinner.ForeColor = System.Drawing.Color.Yellow;
+            lblWinner.Text = "In Progress";
+        }
+    }
+}
